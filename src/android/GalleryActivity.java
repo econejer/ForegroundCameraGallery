@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -45,7 +46,6 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
-import com.tuxpan.collatree.R;
 
 /**
  * Class to search images from the memory card. Based on
@@ -71,7 +71,7 @@ public class GalleryActivity extends Activity implements OnItemClickListener {
 		super.onCreate(savedInstanceState);
 		// Request progress bar
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-		setContentView(android.R.layout.gallery);
+		setContentView(getApplication().getResources().getIdentifier("gallery", "layout", getPackageName()));
 
 		((WindowManager) getSystemService(Context.WINDOW_SERVICE))
 				.getDefaultDisplay();
@@ -103,7 +103,7 @@ public class GalleryActivity extends Activity implements OnItemClickListener {
 	 * Setup the grid view.
 	 */
 	private void setupViews() {
-		sdcardImages = (GridView) findViewById(android.R.id.sdcard);
+		sdcardImages = (GridView) findViewById(getApplication().getResources().getIdentifier("sdcard", "id", getPackageName()));
 		//sdcardImages.setNumColumns(display.getWidth() / 95);
 		sdcardImages.setNumColumns(3);  //DSS
 		sdcardImages.setClipToPadding(false);
