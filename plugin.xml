@@ -49,8 +49,8 @@
                 android:label="ForegroundCameraPlugin" 
                 android:name="com.tuxpan.foregroundcameragalleryplugin.CameraActivity" 
                 android:screenOrientation="portrait" 
-                android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
-            </activity>
+                android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            />
             
             
         </config-file>
@@ -60,7 +60,7 @@
 		android:name="com.tuxpan.foregroundcameragalleryplugin.GalleryActivity"
 		android:label="Gallery"
 		android:screenOrientation="portrait" 
-        	</activity>
+        	/>
         </config-file>
 
         <source-file src="src/android/CameraActivity.java" target-dir="src/com/tuxpan/foregroundcameragalleryplugin" />
