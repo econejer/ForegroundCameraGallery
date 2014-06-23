@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+   	android:id="@+id/root_preview"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:id="@+id/camera_preview"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent" >
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" >
+        
+        <Button
+            android:id="@+id/button_capture"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+       		android:layout_margin="10dp"
+            android:text="Captura" />
+
+       <ToggleButton
+           android:id="@+id/switch1"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignBottom="@+id/button_cancel"
+           android:layout_alignParentLeft="true"
+           android:layout_below="@+id/button_capture"
+           android:layout_margin="10dp"
+           android:text="Flash" />
+       
+        <Button
+            android:id="@+id/button_cancel"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/button_capture"
+            android:layout_gravity="bottom|right"
+            android:layout_toRightOf="@+id/switch1"
+            android:layout_margin="10dp"
+            android:text="Cancelar" />
+
+        <ZoomControls
+            android:id="@+id/zoomControls1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/button_cancel"
+            android:layout_margin="10dp"
+            android:gravity="center" />
+    </RelativeLayout>
+</RelativeLayout>

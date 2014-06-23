@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        id="com.tuxpan.foregroundcameragalleryplugin"
+        version="0.1.1">
+    <name>Foreground and Gallery</name>
+    <license>Apache 2.0</license>
+    <author>Esteban Conejeros and others</author>
+    <description>Camera and Gallery plugin that prevents app being killed off in Android</description>
+    <keywords>camera,foreground</keywords>
+    
+    <engines>
+        <engine name="cordova" version=">=3.3.0" />
+    </engines>    
+    
+    <js-module src="www/CameraConstants.js" name="Camera">
+        <clobbers target="Camera" />
+    </js-module>
+
+    <js-module src="www/CameraPopoverOptions.js" name="CameraPopoverOptions">
+        <clobbers target="CameraPopoverOptions" />
+    </js-module>
+
+    <js-module src="www/Camera.js" name="camera">
+        <clobbers target="navigator.camera" />
+    </js-module>
+    
+    <js-module src="www/CameraPopoverHandle.js" name="CameraPopoverHandle">
+    	<clobbers target="CameraPopoverHandle" />
+    </js-module>
+
+    <!-- android -->
+    <platform name="android">
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="Camera">
+                <param name="android-package" value="com.tuxpan.foregroundcameragalleryplugin.ForegroundCameraLauncher"/>
+            </feature>
+        </config-file>
+
+        <config-file target="AndroidManifest.xml" parent="/*">
+            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+            <uses-permission android:name="android.permission.CAMERA" />
+            <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
+        </config-file>
+
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <activity>
+                android:label="ForegroundCameraPlugin" 
+                android:name="com.tuxpan.foregroundcameragalleryplugin.CameraActivity" 
+                android:screenOrientation="portrait" 
+                android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+            </activity>
+            
+            
+        </config-file>
+        
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+        	<activity>
+		android:name="com.tuxpan.foregroundcameragalleryplugin.GalleryActivity"
+		android:label="Gallery"
+		android:screenOrientation="portrait" 
+        	</activity>
+        </config-file>
+
+        <source-file src="src/android/CameraActivity.java" target-dir="src/com/tuxpan/foregroundcameragalleryplugin" />
+        <source-file src="src/android/CameraPreview.java" target-dir="src/com/tuxpan/foregroundcameragalleryplugin" />
+        <source-file src="src/android/ExifHelper.java" target-dir="src/com/tuxpan/foregroundcameragalleryplugin" />
+        <source-file src="src/android/FileHelper.java" target-dir="src/com/tuxpan/foregroundcameragalleryplugin" />
+        <source-file src="src/android/ForegroundCameraLauncher.java" target-dir="src/com/tuxpan/foregroundcameragalleryplugin" />
+        <source-file src="src/android/ForegroundCameraPreview.java" target-dir="src/com/tuxpan/foregroundcameragalleryplugin" />
+        <source-file src="src/android/GalleryActivity.java" target-dir="src/com/tuxpan/foregroundcameragalleryplugin" />
+        
+        <source-file src="src/android/foregroundcameraplugin.xml" target-dir="res/layout" />
+        <source-file src="src/android/layout_v9/foregroundcameraplugin.xml" target-dir="res/layout/layout_v9" />
+
+
+      
+     </platform>
+           
+</plugin>
