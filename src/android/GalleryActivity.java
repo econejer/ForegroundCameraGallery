@@ -71,7 +71,7 @@ public class GalleryActivity extends Activity implements OnItemClickListener {
 		super.onCreate(savedInstanceState);
 		// Request progress bar
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-		setContentView(R.layout.gallery);
+		setContentView(android.R.layout.gallery);
 
 		((WindowManager) getSystemService(Context.WINDOW_SERVICE))
 				.getDefaultDisplay();
@@ -103,7 +103,7 @@ public class GalleryActivity extends Activity implements OnItemClickListener {
 	 * Setup the grid view.
 	 */
 	private void setupViews() {
-		sdcardImages = (GridView) findViewById(R.id.sdcard);
+		sdcardImages = (GridView) findViewById(android.R.id.sdcard);
 		//sdcardImages.setNumColumns(display.getWidth() / 95);
 		sdcardImages.setNumColumns(3);  //DSS
 		sdcardImages.setClipToPadding(false);
