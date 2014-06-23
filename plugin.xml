@@ -72,6 +72,7 @@
         <source-file src="src/android/GalleryActivity.java" target-dir="src/com/tuxpan/foregroundcameragalleryplugin" />
         
         <source-file src="src/android/foregroundcameraplugin.xml" target-dir="res/layout" />
+        <source-file src="src/android/gallery.xml" target-dir="res/layout" />
         <source-file src="src/android/layout_v9/foregroundcameraplugin.xml" target-dir="res/layout/layout_v9" />
 
 

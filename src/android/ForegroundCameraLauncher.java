@@ -16,7 +16,7 @@
        specific language governing permissions and limitations
        under the License.
 */
-package co.mwater.foregroundcameraplugin;
+package com.tuxpan.foregroundcameragalleryplugin;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -73,7 +73,7 @@ public class ForegroundCameraLauncher extends CordovaPlugin implements MediaScan
     private static final String GET_PICTURE = "Get Picture";
     private static final String GET_VIDEO = "Get Video";
     private static final String GET_All = "Get All";
-    
+
     private static final String LOG_TAG = "ForegroundCameraLauncher";
 
     private int mQuality;                   // Compression quality hint (0-100: 0=low quality & high compression, 100=compress of max quality)
@@ -148,11 +148,11 @@ public class ForegroundCameraLauncher extends CordovaPlugin implements MediaScan
                 callbackContext.sendPluginResult(r);
                 return true;
             }
-             
+
             PluginResult r = new PluginResult(PluginResult.Status.NO_RESULT);
             r.setKeepCallback(true);
             callbackContext.sendPluginResult(r);
-            
+
             return true;
         }
         return false;
@@ -242,7 +242,7 @@ public class ForegroundCameraLauncher extends CordovaPlugin implements MediaScan
     // TODO: Images selected from SDCARD don't display correctly, but from CAMERA ALBUM do!
     public void getImage(int srcType, int returnType) {
     	Intent intent = new Intent(this.cordova.getActivity().getApplicationContext() , GalleryActivity.class);
-       
+
 //    	String title = GET_PICTURE;
 //        if (this.mediaType == PICTURE) {
 //            intent.setType("image/*");
@@ -307,7 +307,7 @@ public class ForegroundCameraLauncher extends CordovaPlugin implements MediaScan
                             // Try to get the bitmap from intent.
                             bitmap = (Bitmap)intent.getExtras().get("data");
                         }
-                        
+
                         // Double-check the bitmap.
                         if (bitmap == null) {
                             Log.d(LOG_TAG, "I either have a null image path or bitmap");
@@ -338,7 +338,7 @@ public class ForegroundCameraLauncher extends CordovaPlugin implements MediaScan
                         }
 
                         // If all this is true we shouldn't compress the image.
-                        if (this.targetHeight == -1 && this.targetWidth == -1 && this.mQuality == 100 && 
+                        if (this.targetHeight == -1 && this.targetWidth == -1 && this.mQuality == 100 &&
                                 !this.correctOrientation) {
                             writeUncompressedImage(uri);
 
@@ -598,7 +598,7 @@ public class ForegroundCameraLauncher extends CordovaPlugin implements MediaScan
      *
      * @param imagePath
      * @return
-     * @throws IOException 
+     * @throws IOException
      */
     private Bitmap getScaledBitmap(String imageUrl) throws IOException {
         // If no new width or height were specified return the original bitmap
@@ -610,13 +610,13 @@ public class ForegroundCameraLauncher extends CordovaPlugin implements MediaScan
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeStream(FileHelper.getInputStreamFromUriString(imageUrl, cordova), null, options);
-        
+
         //CB-2292: WTF? Why is the width null?
         if(options.outWidth == 0 || options.outHeight == 0)
         {
             return null;
         }
-        
+
         // determine the correct aspect ratio
         int[] widthHeight = calculateAspectRatio(options.outWidth, options.outHeight);
 
