@@ -45,7 +45,7 @@
         </config-file>
 
         <config-file target="AndroidManifest.xml" parent="/manifest/application">
-            <activity>
+            <activity
                 android:label="ForegroundCameraPlugin" 
                 android:name="com.tuxpan.foregroundcameragalleryplugin.CameraActivity" 
                 android:screenOrientation="portrait" 
@@ -56,7 +56,7 @@
         </config-file>
         
         <config-file target="AndroidManifest.xml" parent="/manifest/application">
-        	<activity>
+        	<activity
 		android:name="com.tuxpan.foregroundcameragalleryplugin.GalleryActivity"
 		android:label="Gallery"
 		android:screenOrientation="portrait" 
