@@ -1,7 +1,7 @@
 ForegroundCameraGallery
 =======================
 
-plugin for phonegap, camera and gallery in the foreground, android only
+plugin for phonegap, camera and gallery in the foreground, android only.
 tested on phonegap version 3.3.0
 
 
