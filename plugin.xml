@@ -73,7 +73,7 @@
         
         <source-file src="src/android/foregroundcameraplugin.xml" target-dir="res/layout" />
         <source-file src="src/android/gallery.xml" target-dir="res/layout" />
-        <source-file src="src/android/layout_v9/foregroundcameraplugin.xml" target-dir="res/layout/layout_v9" />
+        <source-file src="src/android/layout_v13/foregroundcameraplugin.xml" target-dir="res/layout/layout_v13" />
 
 
       
