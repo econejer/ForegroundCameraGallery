@@ -1,27 +1,25 @@
 package com.tuxpan.foregroundcameragalleryplugin;
 
 /*
-	    Copyright 2013 Bruno Carreira - Lucas Farias - Rafael Luna - Vin?cius Fonseca.
-	    Ported to PhoneGap 2.7 by Mahenda Liya
+ Copyright 2013 Bruno Carreira - Lucas Farias - Rafael Luna - Vin?cius Fonseca.
+ Ported to PhoneGap 2.7 by Mahenda Liya
 
-		Licensed under the Apache License, Version 2.0 (the "License");
-		you may not use this file except in compliance with the License.
-		You may obtain a copy of the License at
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
 
-		http://www.apache.org/licenses/LICENSE-2.0
+ http://www.apache.org/licenses/LICENSE-2.0
 
-		Unless required by applicable law or agreed to in writing, software
-		distributed under the License is distributed on an "AS IS" BASIS,
-		WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-		See the License for the specific language governing permissions and
-   		limitations under the License.
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
  */
-
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -46,11 +44,10 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
-
 /**
  * Class to search images from the memory card. Based on
- * http://mihaifonoage.blogspot.com/2009/11/displaying-images-from-sd-card-in.html
- * Thanks to the author.
+ * http://mihaifonoage.blogspot
+ * .com/2009/11/displaying-images-from-sd-card-in.html Thanks to the author.
  */
 public class GalleryActivity extends Activity implements OnItemClickListener {
 
@@ -73,8 +70,7 @@ public class GalleryActivity extends Activity implements OnItemClickListener {
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(getApplication().getResources().getIdentifier("gallery", "layout", getPackageName()));
 
-		((WindowManager) getSystemService(Context.WINDOW_SERVICE))
-				.getDefaultDisplay();
+		((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
 
 		setupViews();
 		setProgressBarIndeterminateVisibility(true);
@@ -104,8 +100,8 @@ public class GalleryActivity extends Activity implements OnItemClickListener {
 	 */
 	private void setupViews() {
 		sdcardImages = (GridView) findViewById(getApplication().getResources().getIdentifier("sdcard", "id", getPackageName()));
-		//sdcardImages.setNumColumns(display.getWidth() / 95);
-		sdcardImages.setNumColumns(3);  //DSS
+		// sdcardImages.setNumColumns(display.getWidth() / 95);
+		sdcardImages.setNumColumns(3); // DSS
 		sdcardImages.setClipToPadding(false);
 		sdcardImages.setOnItemClickListener(GalleryActivity.this);
 		imageAdapter = new ImageAdapter(getApplicationContext());
@@ -159,16 +155,14 @@ public class GalleryActivity extends Activity implements OnItemClickListener {
 
 		for (int i = 0; i < count; i++) {
 			final ImageView v = (ImageView) grid.getChildAt(i);
-			list[i] = new LoadedImage(
-					((BitmapDrawable) v.getDrawable()).getBitmap());
+			list[i] = new LoadedImage(((BitmapDrawable) v.getDrawable()).getBitmap());
 		}
 
 		return list;
 	}
 
-
 	/**
-	 * Async task for loading the images from the SD card.	 *
+	 * Async task for loading the images from the SD card. *
 	 */
 	class LoadImagesFromSDCard extends AsyncTask<Object, LoadedImage, Integer> {
 
@@ -187,15 +181,8 @@ public class GalleryActivity extends Activity implements OnItemClickListener {
 			// Set up an array of the Thumbnail Image ID column we want
 			String[] projection = { MediaStore.Images.Media._ID };
 			// Create the cursor pointing to the SDCard
-			Cursor cursor = managedQuery(
-					MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, // Which
-																				// columns
-																				// to
-																				// return
-					null, // Return all rows
-					null, MediaStore.Images.Media.DATE_TAKEN + " DESC");
-			int columnIndex = cursor
-					.getColumnIndexOrThrow(MediaStore.Images.Media._ID);
+			Cursor cursor = managedQuery(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, null, null, MediaStore.Images.Media.DATE_TAKEN + " DESC");
+			int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID);
 			int size = cursor.getCount();
 			// If size is 0, there are no images on the SD Card.
 			if (size == 0) {
@@ -210,9 +197,7 @@ public class GalleryActivity extends Activity implements OnItemClickListener {
 				imageID = cursor.getInt(columnIndex);
 				sequencialImageID.put(Integer.valueOf(i), imageID);
 
-				bitmap = MediaStore.Images.Thumbnails.getThumbnail(
-						getContentResolver(), imageID,
-						MediaStore.Images.Thumbnails.MICRO_KIND, null);
+				bitmap = MediaStore.Images.Thumbnails.getThumbnail(getContentResolver(), imageID, MediaStore.Images.Thumbnails.MICRO_KIND, null);
 				if (bitmap != null) {
 					try {
 						newBitmap = Bitmap.createScaledBitmap(bitmap, 170, 170, true);
@@ -223,7 +208,7 @@ public class GalleryActivity extends Activity implements OnItemClickListener {
 						if (newBitmap != null) {
 							publishProgress(new LoadedImage(newBitmap));
 						}
-					} catch (OutOfMemoryError e){
+					} catch (OutOfMemoryError e) {
 						bitmap.recycle();
 						bitmap = null;
 						System.gc();
@@ -236,7 +221,6 @@ public class GalleryActivity extends Activity implements OnItemClickListener {
 			cursor.close();
 			return null;
 		}
-
 
 		/**
 		 * Add a new LoadedImage in the images grid.
@@ -257,8 +241,7 @@ public class GalleryActivity extends Activity implements OnItemClickListener {
 		@Override
 		protected void onPostExecute(Integer result) {
 			if ((result != null) && (result == -1)) {
-				AlertDialog.Builder dialog = new AlertDialog.Builder(
-						sdcardImages.getContext());
+				AlertDialog.Builder dialog = new AlertDialog.Builder(sdcardImages.getContext());
 				dialog.setTitle("Alerta");
 				dialog.setMessage("No se encontrarón imagenes!");
 				dialog.setNeutralButton("OK", new OnClickListener() {
@@ -344,54 +327,51 @@ public class GalleryActivity extends Activity implements OnItemClickListener {
 
 		Integer imageID = sequencialImageID.get(position);
 
-		Uri uri = Uri.parse(MediaStore.Images.Media.EXTERNAL_CONTENT_URI + "/"
-				+ imageID);
+		Uri uri = Uri.parse(MediaStore.Images.Media.EXTERNAL_CONTENT_URI + "/" + imageID);
 		getIntent().setData(uri);
 		setResult(RESULT_OK, getIntent());
 		finish();
 	}
 
-	public static Bitmap decodeScaledBitmapFromSdCard(String filePath,
-	        int reqWidth, int reqHeight) {
+	public static Bitmap decodeScaledBitmapFromSdCard(String filePath, int reqWidth, int reqHeight) {
 
-	    // First decode with inJustDecodeBounds=true to check dimensions
-	    final BitmapFactory.Options options = new BitmapFactory.Options();
-	    options.inJustDecodeBounds = true;
-	    options.inPurgeable = true;
-	    options.inInputShareable = true;
+		// First decode with inJustDecodeBounds=true to check dimensions
+		final BitmapFactory.Options options = new BitmapFactory.Options();
+		options.inJustDecodeBounds = true;
+		options.inPurgeable = true;
+		options.inInputShareable = true;
 
-	    BitmapFactory.decodeFile(filePath, options);
+		BitmapFactory.decodeFile(filePath, options);
 
-	    // Calculate inSampleSize
-	    options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+		// Calculate inSampleSize
+		options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
 
-	    // Decode bitmap with inSampleSize set
-	    options.inJustDecodeBounds = false;
-	    return BitmapFactory.decodeFile(filePath, options);
+		// Decode bitmap with inSampleSize set
+		options.inJustDecodeBounds = false;
+		return BitmapFactory.decodeFile(filePath, options);
 	}
 
-	public static int calculateInSampleSize(
-            BitmapFactory.Options options, int reqWidth, int reqHeight) {
-	    // Raw height and width of image
-	    final int height = options.outHeight;
-	    final int width = options.outWidth;
-	    int inSampleSize = 1;
+	public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+		// Raw height and width of image
+		final int height = options.outHeight;
+		final int width = options.outWidth;
+		int inSampleSize = 1;
 
-	    //if (height > reqHeight || width > reqWidth) {
-	    if (height > reqHeight) {
+		// if (height > reqHeight || width > reqWidth) {
+		if (height > reqHeight) {
 
-	        final int halfHeight = height / 2;
-	        final int halfWidth = width / 2;
+			final int halfHeight = height / 2;
+			final int halfWidth = width / 2;
 
-	        // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-	        // height and width larger than the requested height and width.
-	        while ((halfHeight / inSampleSize) > reqHeight
-	                && (halfWidth / inSampleSize) > reqWidth) {
-	            inSampleSize *= 2;
-	        }
-	    }
+			// Calculate the largest inSampleSize value that is a power of 2 and
+			// keeps both
+			// height and width larger than the requested height and width.
+			while ((halfHeight / inSampleSize) > reqHeight && (halfWidth / inSampleSize) > reqWidth) {
+				inSampleSize *= 2;
+			}
+		}
 
-	    return inSampleSize;
+		return inSampleSize;
 	}
 
 }

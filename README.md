@@ -2,6 +2,7 @@ ForegroundCameraGallery
 =======================
 
 plugin phonegap for camera and gallery in the foreground
+tested on phonegap version 3.3.0
 
 
 based on these previous works : 
@@ -12,5 +13,5 @@ https://github.com/mWater/cordova-plugin-camera-foreground
 
 usage : 
 
-uninstall apache cordova camera plugin and install this. 
-same functionality.
+Uninstall apache cordova camera plugin and install this. 
+Same functionality.
