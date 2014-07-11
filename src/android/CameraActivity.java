@@ -28,18 +28,18 @@ import android.hardware.Camera;
 import android.hardware.Camera.AutoFocusCallback;
 import android.hardware.Camera.Parameters;
 import android.hardware.Camera.PictureCallback;
+import android.hardware.SensorManager;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.OrientationEventListener;
 import android.view.View;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.LinearLayout;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
-import android.widget.Switch;
-import android.widget.ToggleButton;
 import android.widget.ZoomControls;
 
 /**
@@ -53,6 +53,13 @@ public class CameraActivity extends Activity {
 	private CameraPreview mPreview;
 	private boolean pressed = false;
 	int currentZoomLevel = 0, maxZoomLevel = 0;
+	private OrientationEventListener mOrientationEventListener;
+	private int mOrientation = -1;
+
+	private static final int ORIENTATION_PORTRAIT_NORMAL = 1;
+	private static final int ORIENTATION_PORTRAIT_INVERTED = 2;
+	private static final int ORIENTATION_LANDSCAPE_NORMAL = 3;
+	private static final int ORIENTATION_LANDSCAPE_INVERTED = 4;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -87,11 +94,11 @@ public class CameraActivity extends Activity {
 		// Create a Preview and set it as the content of activity.
 		mPreview = new CameraPreview(this, mCamera);
 
-		RelativeLayout preview = (RelativeLayout) findViewById(getResources().getIdentifier("camera_preview", "id", getPackageName()));
+		FrameLayout preview = (FrameLayout) findViewById(getResources().getIdentifier("camera_preview", "id", getPackageName()));
 		preview.addView(mPreview);
-
+		
 		// Add a listener to the Capture button
-		Button captureButton = (Button) findViewById(getResources().getIdentifier("button_capture", "id", getPackageName()));
+		ImageButton captureButton = (ImageButton) findViewById(getResources().getIdentifier("button_capture", "id", getPackageName()));
 		captureButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 
@@ -107,13 +114,13 @@ public class CameraActivity extends Activity {
 				mCamera.autoFocus(new AutoFocusCallback() {
 
 					public void onAutoFocus(boolean success, Camera camera) {
-						mCamera.takePicture(null, null, mPicture);
+						mCamera.takePicture(null, null, null, mPicture);
 					}
 				});
 			}
 		});
 
-		Button cancelButton = (Button) findViewById(getResources().getIdentifier("button_cancel", "id", getPackageName()));
+		ImageButton cancelButton = (ImageButton) findViewById(getResources().getIdentifier("button_cancel", "id", getPackageName()));
 		cancelButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				pressed = false;
@@ -124,10 +131,9 @@ public class CameraActivity extends Activity {
 
 		// Is the toggle on?
 		CompoundButton tb = (CompoundButton) findViewById(getResources().getIdentifier("switch1", "id", getPackageName()));
-
 		if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)) {
 			tb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-				@Override
+				// @Override
 				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 					if (isChecked) {
 						params.setFlashMode(Parameters.FLASH_MODE_AUTO);
@@ -143,7 +149,6 @@ public class CameraActivity extends Activity {
 		}
 
 		ZoomControls zoomControls = (ZoomControls) findViewById(getResources().getIdentifier("zoomControls1", "id", getPackageName()));
-
 		if (params.isZoomSupported() && params.isSmoothZoomSupported()) {
 			// most phones
 			maxZoomLevel = params.getMaxZoom();
@@ -203,6 +208,96 @@ public class CameraActivity extends Activity {
 	}
 
 	@Override
+	protected void onResume() {
+		super.onResume();
+
+		if (mOrientationEventListener == null) {
+			mOrientationEventListener = new OrientationEventListener(this, SensorManager.SENSOR_DELAY_NORMAL) {
+
+				@Override
+				public void onOrientationChanged(int orientation) {
+
+					// determine our orientation based on sensor response
+					int lastOrientation = mOrientation;
+
+					if (orientation >= 315 || orientation < 45) {
+						if (mOrientation != ORIENTATION_PORTRAIT_NORMAL) {
+							mOrientation = ORIENTATION_PORTRAIT_NORMAL;
+						}
+					} else if (orientation < 315 && orientation >= 225) {
+						if (mOrientation != ORIENTATION_LANDSCAPE_NORMAL) {
+							mOrientation = ORIENTATION_LANDSCAPE_NORMAL;
+						}
+					} else if (orientation < 225 && orientation >= 135) {
+						if (mOrientation != ORIENTATION_PORTRAIT_INVERTED) {
+							mOrientation = ORIENTATION_PORTRAIT_INVERTED;
+						}
+					} else { // orientation <135 && orientation > 45
+						if (mOrientation != ORIENTATION_LANDSCAPE_INVERTED) {
+							mOrientation = ORIENTATION_LANDSCAPE_INVERTED;
+						}
+					}
+
+					if (lastOrientation != mOrientation) {
+						changeRotation(mOrientation, lastOrientation);
+					}
+				}
+			};
+		}
+		if (mOrientationEventListener.canDetectOrientation()) {
+			mOrientationEventListener.enable();
+		}
+	}
+
+	/**
+	 * Performs required action to accommodate new orientation
+	 * 
+	 * @param orientation
+	 * @param lastOrientation
+	 */
+	private void changeRotation(int orientation, int lastOrientation) {
+		final Camera.Parameters params = mCamera.getParameters();
+		switch (orientation) {
+		case ORIENTATION_PORTRAIT_NORMAL:
+			// mSnapButton.setImageDrawable(getRotatedImage(android.R.drawable.ic_menu_camera,
+			// 270));
+			// mBackButton.setImageDrawable(getRotatedImage(android.R.drawable.ic_menu_revert,
+			// 270));
+			params.setRotation(90);
+			Log.v("CameraActivity", "Orientation = 90");
+			break;
+		case ORIENTATION_LANDSCAPE_NORMAL:
+			// mSnapButton.setImageResource(android.R.drawable.ic_menu_camera);
+			// mBackButton.setImageResource(android.R.drawable.ic_menu_revert);
+			params.setRotation(0);
+			Log.v("CameraActivity", "Orientation = 0");
+			break;
+		case ORIENTATION_PORTRAIT_INVERTED:
+			// mSnapButton.setImageDrawable(getRotatedImage(android.R.drawable.ic_menu_camera,
+			// 90));
+			// mBackButton.setImageDrawable(getRotatedImage(android.R.drawable.ic_menu_revert,
+			// 90));
+			params.setRotation(270);
+			Log.v("CameraActivity", "Orientation = 270");
+			break;
+		case ORIENTATION_LANDSCAPE_INVERTED:
+			// mSnapButton.setImageDrawable(getRotatedImage(android.R.drawable.ic_menu_camera,
+			// 180));
+			// mBackButton.setImageDrawable(getRotatedImage(android.R.drawable.ic_menu_revert,
+			// 180));
+			params.setRotation(180);
+			Log.v("CameraActivity", "Orientation = 180");
+			break;
+		}
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		mOrientationEventListener.disable();
+	}
+
+	@Override
 	protected void onDestroy() {
 		if (mCamera != null) {
 			try {
@@ -246,9 +341,35 @@ public class CameraActivity extends Activity {
 			} catch (IOException e) {
 				Log.d(TAG, "Error accessing file: " + e.getMessage());
 			}
+
+			ExifInterface exif;
+			try {
+				exif = new ExifInterface(pictureFile.getAbsolutePath());
+				switch (mOrientation) {
+				case ORIENTATION_PORTRAIT_NORMAL:
+					// image.put(Media.ORIENTATION, 90);
+					exif.setAttribute(ExifInterface.TAG_ORIENTATION, String.valueOf(ExifInterface.ORIENTATION_ROTATE_90));
+					break;
+				case ORIENTATION_LANDSCAPE_NORMAL:
+					exif.setAttribute(ExifInterface.TAG_ORIENTATION, String.valueOf(ExifInterface.ORIENTATION_NORMAL));
+					break;
+				case ORIENTATION_PORTRAIT_INVERTED:
+					exif.setAttribute(ExifInterface.TAG_ORIENTATION, String.valueOf(ExifInterface.ORIENTATION_ROTATE_270));
+					break;
+				case ORIENTATION_LANDSCAPE_INVERTED:
+					exif.setAttribute(ExifInterface.TAG_ORIENTATION, String.valueOf(ExifInterface.ORIENTATION_ROTATE_180));
+					break;
+				}
+				exif.saveAttributes();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
 			setResult(RESULT_OK);
 			pressed = false;
 			finish();
 		}
+
 	};
 }

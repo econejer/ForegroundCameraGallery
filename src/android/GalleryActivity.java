@@ -59,7 +59,7 @@ public class GalleryActivity extends Activity implements OnItemClickListener {
 	/**
 	 * Creates the content view, sets up the grid, the adapter, and the click
 	 * listener.
-	 *
+	 * 
 	 * @param savedInstanceState
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
@@ -130,7 +130,7 @@ public class GalleryActivity extends Activity implements OnItemClickListener {
 
 	/**
 	 * Add image(s) to the grid view adapter.
-	 *
+	 * 
 	 * @param value
 	 *            Array of LoadedImages references
 	 */
@@ -143,7 +143,7 @@ public class GalleryActivity extends Activity implements OnItemClickListener {
 
 	/**
 	 * Save bitmap images into a list and return that list.
-	 *
+	 * 
 	 * @return
 	 * @see android.app.Activity#onRetainNonConfigurationInstance()
 	 */
@@ -169,7 +169,7 @@ public class GalleryActivity extends Activity implements OnItemClickListener {
 		/**
 		 * Load images from SD Card in the background, and display each image on
 		 * the screen.
-		 *
+		 * 
 		 * @see android.os.AsyncTask#doInBackground(Params[])
 		 */
 		@Override
@@ -224,7 +224,7 @@ public class GalleryActivity extends Activity implements OnItemClickListener {
 
 		/**
 		 * Add a new LoadedImage in the images grid.
-		 *
+		 * 
 		 * @param value
 		 *            The image.
 		 */
@@ -235,7 +235,7 @@ public class GalleryActivity extends Activity implements OnItemClickListener {
 
 		/**
 		 * Set the visibility of the progress bar to false.
-		 *
+		 * 
 		 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
 		 */
 		@Override
@@ -317,7 +317,7 @@ public class GalleryActivity extends Activity implements OnItemClickListener {
 
 	/**
 	 * When an image is clicked, load that image as a puzzle.
-	 *
+	 * 
 	 * @param parent
 	 * @param v
 	 * @param position
