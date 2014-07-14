@@ -4,25 +4,25 @@
     android:layout_width="fill_parent"
     android:layout_height="match_parent" >
 
-    <RelativeLayout
+    <FrameLayout
         android:id="@+id/camera_preview"
         android:layout_width="fill_parent"
         android:layout_height="match_parent" >
 
-    </RelativeLayout>
+    </FrameLayout>
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true" >
         
-        <Button
+        <ImageButton
             android:id="@+id/button_capture"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
        		android:layout_margin="10dp"
-            android:text="Captura" />
+            android:src="@android:drawable/ic_menu_camera" />
 
        <ToggleButton
            android:id="@+id/switch1"
@@ -34,7 +34,7 @@
            android:layout_margin="10dp"
            android:text="Flash" />
        
-        <Button
+        <ImageButton
             android:id="@+id/button_cancel"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
             android:layout_gravity="bottom|right"
             android:layout_toRightOf="@+id/switch1"
             android:layout_margin="10dp"
-            android:text="Cancelar" />
+            android:src="@android:drawable/ic_menu_close_clear_cancel" />
 
         <ZoomControls
             android:id="@+id/zoomControls1"
